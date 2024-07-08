@@ -1,63 +1,58 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
 
 function processUserObject(userObject) {
-    foo(userObject.test); 
+  foo(userObject.test); 
 
-    // random code to pad out example
-    function manipulateObject(obj) {
-        obj.tempValue = "temporary";
-        console.log("Temporary value set:", obj.tempValue);
-    }
+  // random code to pad out example
+  function manipulateObject(obj) {
+    obj.tempValue = "temporary";
+    console.log("Temporary value set:", obj.tempValue);
+  }
 
-    function useTestField(obj) {
-        if (obj.test === "foo") {
-            console.log("Test field is 'foo'.");
-            obj.test = "bar";
-        } else {
-            console.log("Test field is not 'foo'.");
-        }
-    }
+  function useTestField(obj) {
+    console.log("Test field is 'foo'.");
+  }
 
-    manipulateObject(userObject);
+  manipulateObject(userObject);
 
-    userObject.test2 = "foobar";
+  userObject.test2 = "foobar"; 
 
-    useTestField(userObject);
+  useTestField(userObject);
 
-    function setTest2(obj) {
-        obj.test3 = "foobar2";
-    }
+  try {
+    eval(userObject); // SINK
+  } catch (error) {
+    console.log("Error evaluating user input:", error);
+  }
 
-    setTest2(userObject);
-
-    try {
-        eval(userObject); // SINK
-    } catch (error) {
-        console.log('Error evaluating user input:', error);
-    }
-
-    return userObject;
+  return userObject;
 }
 
-app.post('/submit', (req, res) => {
-    const userInput = req.body.userInput; // SOURCE
+app.post("/submit", (req, res) => {
+  // SOURCE
+  const userInput = req.body.userInput; 
 
-    if (userInput !== 'foo' && userInput !== '0') { // Showing unnecessary if statements
+  if (userInput !== "foo" && userInput !== "0") {
 
-        processUserObject(userInput);
 
-        res.send('Input processed.');
-    } else {
-        res.send('Input is either empty or equal to zero.');
-    }
+    processUserObject(userInput);
+
+    res.send("Input processed.");
+  } else {
+    res.send("Input is either empty or equal to zero.");
+  }
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
